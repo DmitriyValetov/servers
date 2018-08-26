@@ -1,0 +1,11 @@
+teams:
+    - { name: 'russian guesses',
+        key: 2501,
+        task_id: -1,
+        position: None
+        }
+    - { name: 'ahalay mahalay',
+        key: 'sdrnr',
+        task_id: -1,
+        position: None
+        }

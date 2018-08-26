@@ -1,0 +1,107 @@
+html,body{font-family:Verdana,sans-serif;font-size:15px;line-height:1.5; color: #555555;}
+
+table {
+    border-collapse: collapse;
+}
+
+td, th {
+    padding: 3px; /* Поля вокруг содержимого таблицы */
+    border: 1px solid black; /* Параметры рамки */
+   }
+/*td {
+	text-indent: 10px;
+}*/
+
+/*
+h1 {
+	text-indent: 10px;
+}
+*/
+.wrap {
+	width: 964px;
+	margin: 0 auto;
+	/*border: 1px solid grey;*/
+}
+
+.button {
+    background-color: white;
+    border: 2px solid #555555;
+    color: black;
+    padding: 16px 16px;
+    text-align: left;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    cursor: pointer;
+    width: 400px;
+    border-radius: 6px;
+}
+
+.button:hover {
+    background-color: #555555;
+    color: white;
+}
+
+.button1 {
+    background-color: white;
+    border: 1px solid #555555;
+    color: black;
+    padding: 8px 16px;
+    text-align: left;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    cursor: pointer;
+    border-radius: 2px;
+}
+
+.button1:hover {
+    background-color: #555555;
+    color: white;
+}
+
+th {
+    text-align: left;
+    margin-right: 100px;
+    margin-left: 100px;
+    text-indent: 16px;
+}
+
+/* ul-treefree */
+ul.ul-treefree { padding-left:25px; }
+ul.ul-treefree ul { margin:0; padding-left:6px; }
+ul.ul-treefree li { position:relative; list-style:none outside none; border-left:solid 1px #999; margin:0; padding:0 0 0 19px; line-height:23px; }
+ul.ul-treefree li:before { content:''; display:block; border-bottom:solid 1px #999; position:absolute; width:18px; height:11px; left:0; top:0; }
+ul.ul-treefree li:last-child { border-left:0 none; }
+ul.ul-treefree li:last-child:before { border-left:solid 1px #999; }
+
+/* ul-dropfree */
+ul.ul-dropfree div.drop {
+width:11px;
+height:11px;
+position:absolute;
+z-index:10;
+top:6px;
+left:-6px;
+background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAALCAIAAAD0nuopAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAE1JREFUeNpinDlzJgNlgAWI09LScEnPmjWLoAImrHpIAkwMFAMqGMGC6X44GzkIsHoQooAFTTVQKdbAwxOigyMsmIh3MC7ASHnqBAgwAD4CGeOiDhXRAAAAAElFTkSuQmCC');
+background-position:-11px 0;
+background-repeat:no-repeat;
+cursor:pointer;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button {  
+
+   opacity: 1;
+
+}
+
+input[type="number"] {
+   width:35px;
+}
