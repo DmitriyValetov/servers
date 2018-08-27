@@ -1,0 +1,13 @@
+teams:
+    - { name: 'russian guesses',
+        key: '2501',
+        task_id: 0,
+        geo_position: None,
+        task_sequence: [0, 1]
+        }
+    - { name: 'ahalay mahalay',
+        key: 'sdrnr',
+        task_id: 0,
+        geo_position: None,
+        task_sequence: [1, 0]
+        }

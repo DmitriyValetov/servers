@@ -6,4 +6,4 @@ app.config["SECRET_KEY"] = "2501"
 core = dict()
 
 
-from app import routes 
+from app import routes

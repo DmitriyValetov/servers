@@ -11,9 +11,12 @@
 <body class="body-footballplayer">
 
 	<div class="login-form">
-		<form name="main_form">
-			Enter your key, please:<input type="text" name="key" value="your password">									
-			<input type="submit" name="login" value="login">
+		<form name="main_form" action="" method="POST">
+			Enter your key, please:<input type="text" name="key" placeholder="Введите ключ">	 
+			{% if log_text %}
+			<span class="error-text"><p>{{log_text}}</p></span>
+			{% endif %}								
+			<input type="submit" name="control_button" value="login">
 		</form>
 	</div>
 
