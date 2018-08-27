@@ -5,28 +5,28 @@
 
 
 {% block body %} 
-<body>
+<body class="body-footballplayer">
 	<form class="main-form" action="" method="POST">
 		{% if key %} <input type="hidden" name="key" value="{{key}}"> {% endif %}
-		<table>
+		<table class="task_table">
 			<tr>
-				<td alig="center">
-					<textarea name="tip">{{tip}}</textarea>									
+				<td>
+					<textarea name="tip" disabled>Подсказка: {{tip}}</textarea>									
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<textarea name="text">{{text}}</textarea>
+					<textarea name="text" disabled>Задание: {{text}}</textarea>
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<input type="text" name="answer" placeholder="Введите ответ">
+				    Ответ:<input type="text" name="answer" placeholder="Введите ответ">
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<input type="submit" name="control_button" value="submit answer">
+					<input type="submit" name="control_button" value="Отправить ответ">
 				</td>
 			</tr>
 		</table>
