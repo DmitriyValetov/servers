@@ -1,57 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="utf-8">
-	<title>Главное меню - MOUSE</title>
-	<link rel="stylesheet" type="text/css" href="/static/style.css">
-</head>
-<body>
-	<div class="wrap"> <!-- Типа вторая обёртка -->
-		<header>
-			<table style="border: none;">
-				<tr style="text-indent: 0px">
-					<th style="border: none;"><h1>MOdeling Uncertainty & SEnsitivity analysis</h1></th>
-					<!-- <th valign="top"><img src="/static/img/mouse_brain.png" alt="MOUSE logo" width="65px"></th> -->
-				</tr>
-			</table>
-		</header>
-		<div class="menu">
-			<!-- Здесь будет основное меню -->
-			<form name="form1" method="POST" action="/">
- 				<table>
-		 			<tr>
-		 				<th>Работа с внешними моделями</th>
-		 				<th><p>Анализ входных и выходных данных</p></th>
-		 			</tr>
-		 			<tr>
-		 				<td><button name="main_choice" class="button" value="sensitivity">Анализ чувствительности</button></td>
-		 				<td><button name="main_choice" class="button" value="gamma_test">Гамма-тест для исходных данных</button></td>
-		 			</tr>
-		 			<tr>
-		 				<td><button name="main_choice" class="button" value="optimization">Оптимизация параметров модели (калибровка)</button></td>
-		 				<td><button name="main_choice" class="button" value="variogram_modeling">Моделирование вариограммы</button></td>
-		 			</tr>
-		 			<tr>		
-		 				<td><button name="main_choice" class="button" value="multivar_and_uncertainty">Многовариантный расчёт и анализ неопределённостей</button></td>
-		 				<td><button name="main_choice" class="button" value="stats_corr_analysis">Статистический и корреляционный<br>анализ</button></td>
-		 			</tr>
-		 			<tr>
-		 				<th><p>Генерация последовательностей и полей</p></th>
-		 			</tr>
-		 			</tr>		
-		 				<td><button name="main_choice" class="button" value="unconditional_generators">Безусловные генераторы</button></td>
-		 			</tr>
-		 			</tr>		
-		 				<td><button name="main_choice" class="button" value="conditional_generators">Условные генераторы</button></td>
-		 			</tr>
- 				</table>
-			</form>
-		</div>
+{% extends "base.html" %}
 
-		<footer>
-			<p style="text-indent: 16px">&copy; 2018 IBRAE lab. 13<p>
-		</footer>
 
+{% block title %} login page {% endblock %}
+
+
+{% block header %} <div class="greetings">Hello there, sportsmen!</div> {% endblock %}
+
+
+{% block body %} 
+<body class="body-footballplayer">
+
+	<div class="login-form">
+		<form name="main_form">
+			Enter your key, please:<input type="text" name="key" value="your password">									
+			<input type="submit" name="login" value="login">
+		</form>
 	</div>
+
 </body>
-</html>
+{% endblock %}
+
+
+{% block footer %}
+<p style="text-indent: 16px">&copy; 2018 IBRAE</p>
+{% endblock %}

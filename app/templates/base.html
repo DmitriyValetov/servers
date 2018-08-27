@@ -1,14 +1,30 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
-<head>
-{% block head %}
-<title>{% block title %}{% endblock %} - My Application</title>
-{% endblock %}
-</head>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" type="text/css" href="/static/style.css">
+        {% block head %}
+        <title>{% block title %}{% endblock %}</title>
+        {% endblock %}
+    </head>
 
-<body>
-{% block body %}
-{% endblock %}
-</body>
+
+    <div class="main-div">
+
+        <header>
+            {% block header %}{% endblock %}
+        </header>
+        
+        {% block body %}
+        {% endblock %}
+        
+
+
+        <footer>
+            {% block footer %}{% endblock %}
+        </footer>
+
+    </div>
 
 </html>

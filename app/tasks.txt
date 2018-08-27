@@ -1,9 +1,9 @@
 tasks:
     - { tip: 'russian provebs',
         text: 'how many guesses had the grany?',
-        answer: 2
+        answer: [2, 'two']
         }
     - { tip: 'anekdots',
         text: 'mama washed the rama, what washed  matahary?',
-        answer: 'karma'
+        answer: ['karma']
         }
