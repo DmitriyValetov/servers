@@ -1,1 +1,23 @@
-you failed!
+{% extends "base.html" %}
+
+
+{% block title %} Bingo {% endblock %}
+
+
+{% block header %} <div class="greetings">И это не правильный ответ!</div> {% endblock %}
+
+
+{% block body %} 
+<body class="body-footballplayer">
+
+	<div class="login-form">
+		<form name="main_form" action="" method="POST">				
+            {% if key %}<input type="hidden" name="key" value="{{key}}">
+            <input type="submit" name="control_button" value="Попробовать снова">{% else %}
+            Oooops, strange request
+            {% endif %}
+		</form>
+	</div>
+
+</body>
+{% endblock %}

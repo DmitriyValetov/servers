@@ -77,31 +77,51 @@ def task():
     return redirect(url_for('index'))
 
 
-@app.route('/end_game', methods=['GET', 'POST'])
+@app.route('/end_game', methods=['POST'])
 def end_game():
     print("end_game page: {}".format(request.method))
     if 'key' in request.form.keys():
         key = request.form['key']
     else:
-        key = None
+        return redirect(url_for('index'))
+
+    team = search_team(key, teams)
+    print("{} are on end_game page.".format(team.name))
+
     return render_template('end_game.html', key=key)
 
 
-@app.route('/success', methods=['GET', 'POST'])
+@app.route('/success', methods=['POST'])
 def success():
     print("success page: {}".format(request.method))
     if 'key' in request.form.keys():
         key = request.form['key']
     else:
-        key = None
+        return redirect(url_for('index'))
+
+    team = search_team(key, teams)
+    print("{} are on success page.".format(team.name))
+
+    if request.method == 'POST' and "control_button" in request.form.keys() \
+        and request.form["control_button"] == 'Продолжить':
+        return redirect(url_for('task'), code=307)
+
     return render_template('success.html', key=key)
 
 
-@app.route('/fail', methods=['GET', 'POST'])
+@app.route('/fail', methods=['POST'])
 def fail():
     print("fail page: {}".format(request.method))
     if 'key' in request.form.keys():
         key = request.form['key']
     else:
-        key = None
+        return redirect(url_for('index'))
+
+    team = search_team(key, teams)
+    print("{} are on fail page.".format(team.name))
+
+    if request.method == 'POST' and "control_button" in request.form.keys() \
+        and request.form["control_button"] == 'Попробовать снова':
+        return redirect(url_for('task'), code=307)
+    
     return render_template('fail.html', key=key)

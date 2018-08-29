@@ -1,1 +1,29 @@
 end game: {% if key %}{{key}}{% else %}stranger{% endif %}
+
+
+{% extends "base.html" %}
+
+
+{% block title %} End of the game {% endblock %}
+
+
+{% block header %} <div class="greetings">Поздравляем, игра окончена, вы дошли до конца!<br>
+    Вы молодцы!
+</div> {% endblock %}
+
+
+{% block body %} 
+<body class="body-footballplayer">
+
+	<div class="login-form">
+		<form name="main_form" action="" method="POST">				
+            {% if key %}
+            <input type="hidden" name="key" value="{{key}}">
+            {% else %}
+            Oooops, strange request
+            {% endif %}
+		</form>
+	</div>
+
+</body>
+{% endblock %}
