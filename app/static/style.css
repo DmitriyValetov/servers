@@ -11,6 +11,22 @@ html
     background-color: #c7b39b; /* Цвет фона */
 }
 
+.grass-back 
+{
+    margin: 0px; padding: 0px;
+    background-image: url(./images/grass.jpeg); /* Путь к фоновому изображению */
+    background-size: cover;
+    background-color: #c7b39b; /* Цвет фона */
+}
+
+.meat-back
+{
+    margin: 0px; padding: 0px;
+    background-image: url(./images/meat.jpeg); /* Путь к фоновому изображению */
+    background-size: cover;
+    background-color: #c7b39b; /* Цвет фона */
+}
+
 .main-div {
     max-width: 600px;
     margin: 10% auto;
