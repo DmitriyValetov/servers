@@ -56,6 +56,30 @@ def get_tasks_file(tasks_file=tasks_file):
         data = fin.read()
     return data
 
-def save_tasks_file(data, tasks_file=tasks_file):
-    with open(file=tasks_file, mode="w") as fin:
+def get_tasks_file_by_team_name(team_name):
+    file_path = os.path.join(os.path.split(__file__)[0], "{}.txt".format(team_name))
+    if not os.path.exists(file_path):
+        return None
+
+    with open(file=file_path, mode="r") as fin:
+        data = fin.read()
+    return data
+
+
+def get_tasks_by_team_name(team_name):
+    file_path = os.path.join(os.path.split(__file__)[0], "{}.txt".format(team_name))
+    if not os.path.exists(file_path):
+        return "no task data for this team: {}".format(team_name)
+
+    with open(file=file_path, mode="r") as fin:
+        tasks_dicts_list = yaml.load(fin)['tasks']
+
+    tasks = []
+    for t in tasks_dicts_list:
+        tasks.append(task(t['location'], t['task_text'], t['answer'], t['post_text']))
+    return tasks
+
+def save_tasks_file_by_team_name(team_name, data):
+    file_path = os.path.join(os.path.split(__file__)[0], "{}.txt".format(team_name))
+    with open(file=file_path, mode="w") as fin:
         fin.write(data)

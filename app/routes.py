@@ -2,7 +2,7 @@ from app import app
 from flask import Flask, request, render_template, redirect, url_for, session
 
 from .teams import teams, search_team, save_team, load_team_text, save_team_text_and_reload_this_team, search_team_index
-from .tasks import tasks, get_tasks_file, save_tasks_file
+from .tasks import tasks, save_tasks_file_by_team_name, get_tasks_file_by_team_name, get_tasks_by_team_name
 
 
 admin_key = '638732'
@@ -177,8 +177,7 @@ def admin():
                     return render_template(page_template_file, key=key, mode='edit_definite_team', teams=teams)
 
                 elif request.form['control_button'] == 'edit_tasks':
-                    tasks_text = get_tasks_file()
-                    return render_template(page_template_file, key=key, mode='edit_tasks', tasks_text=tasks_text)
+                    return render_template(page_template_file, key=key, mode='edit_tasks', teams=teams)
 
                 elif request.form['control_button'] == 'geomap':
                     return render_template(page_template_file, key=key, mode='geomap')
@@ -186,17 +185,30 @@ def admin():
         else: # with a mode teg
             if request.form['mode'] == 'edit_tasks':
 
-                if request.form['control_button'] == 'cancel':
-                    return render_template(page_template_file, key=key, mode=None)
-                
-                elif request.form['control_button'] == 'save':
-                    save_tasks_file(request.form['raw_configs_text'])
-                    tasks_text = get_tasks_file()
-                    return render_template(page_template_file, key=key, mode='edit_tasks', tasks_text=tasks_text)
+                    
+                # choose team to look into it's tasks:
+                if 'team_key' not in request.form.keys(): # another time choose the team
+                    # return from choosing the team to edit it's taks to admin menu:
+                    if 'control_button' in request.form.keys() and request.form['control_button'] == 'cancel':
+                        return render_template(page_template_file, key=key, mode=None)
 
-                elif request.form['control_button'] == 'reopen':
-                    tasks_text = get_tasks_file()
-                    return render_template(page_template_file, key=key, mode='edit_tasks', tasks_text=tasks_text)
+                    return render_template(page_template_file, key=key, mode='edit_tasks', teams=teams)
+                else:
+
+                    # return from team tasks to choosing the team for tasks editing
+                    team = search_team(request.form['team_key'], teams)                    
+                    if 'control_button' in request.form.keys():
+                        if request.form['control_button'] == 'cancel':
+                            return render_template(page_template_file, key=key, mode='edit_tasks', teams=teams)
+
+                        elif request.form['control_button'] == 'save':
+                            save_tasks_file_by_team_name(team.name, request.form['tasks_text'])
+                            tasks[team.name] = get_tasks_by_team_name(team.name)
+
+                    # reopen and first enter the page and after save
+                    tasks_text = get_tasks_file_by_team_name(team.name)
+                    return render_template(page_template_file, key=key, mode='edit_tasks', 
+                        team=team, tasks_text=tasks_text)
 
             elif request.form['mode'] == 'edit_definite_team':
                 if "control_button" in request.form.keys():

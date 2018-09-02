@@ -33,30 +33,53 @@
 
         {% if mode == 'edit_tasks' %}
 
-        <table>
 
-            <tr>
-
-                <td class="invisible" valign="center">
-
-                        <textarea class="config_text_area" name="raw_configs_text" rows="20">{% if tasks_text %}{{ tasks_text }}{% else %}--- tasks are empty ---{% endif %}</textarea>
-
-                    <br>
-                    
-                        <table>
-                            <tr>
-                                <td><button class="button_auto_width" name="control_button" value="save">Сохранить</button></td>
-                                <td><button class="button_auto_width" name="control_button" value="reopen">Перезагрузить</button></td>
-                                <td><button class="button_auto_width" name="control_button" value="cancel">Вернуться</button></td>
-                            </tr>
-                        </table>
-                    
-                </td>
-
-            </tr>
+            {% if teams %} 
 
 
-        </table>
+
+                <table>
+                    {% for team in teams %}
+                        <tr>
+                            <td><button class="button_auto_width" name="team_key" value="{{team.key}}">{{team.name}}</button></td>
+                        </tr>
+                    {% endfor %}
+                    <tr>
+                        <td><button class="button_auto_width" name="control_button" value="cancel">Вернуться</button></td>
+                    </tr>
+                </table>
+        
+
+            {% elif team %}
+
+                <input type="hidden" name="team_key" value="{{team.key}}">
+                <p>Editting tasks of the team: {{team.name}}</p>
+                <table>
+
+                    <tr>
+
+                        <td class="invisible" valign="center">
+
+                                <textarea class="config_text_area" name="tasks_text" rows="20">{% if tasks_text %}{{ tasks_text }}{% else %}--- tasks are empty ---{% endif %}</textarea>
+
+                            <br>
+                            
+                                <table>
+                                    <tr>
+                                        <td><button class="button_auto_width" name="control_button" value="save">Сохранить</button></td>
+                                        <td><button class="button_auto_width" name="control_button" value="reopen">Перезагрузить</button></td>
+                                        <td><button class="button_auto_width" name="control_button" value="cancel">Вернуться</button></td>
+                                    </tr>
+                                </table>
+                            
+                        </td>
+
+                    </tr>
+
+
+                </table>
+
+            {% endif %}
 
         {% elif mode == 'edit_definite_team' %}
 
@@ -79,6 +102,7 @@
             {% elif team %}
 
             <input type="hidden" name="team_key" value="{{team.key}}">
+            <p>Editting team: {{team.name}}</p>
             <table>
 
                     <tr>
