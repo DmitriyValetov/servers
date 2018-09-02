@@ -71,8 +71,8 @@ textarea
     display: block;
     margin-left: auto;
     margin-right: auto;
-    width: 90%;
-    height: 50%;
+    width: 400px;
+    height: 150px;
     resize: none;
 }
 
