@@ -1,9 +1,14 @@
 tasks:
     - { tip: 'russian provebs',
         text: 'how many guesses had the grany?',
-        answer: [2, '2', 'two']
+        answer: [2, '2', 'two', 'два']
         }
     - { tip: 'anekdots',
         text: 'mama washed the rama, what washed  matahary?',
-        answer: ['karma']
+        answer: ['krishna', 'кришна']
+        }
+    - {
+        tip: 'math',
+        text: '1+1*2',
+        answer: ['3', '4', 'three', 'four', 'три', 'четыре']
         }

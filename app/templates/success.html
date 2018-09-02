@@ -13,6 +13,7 @@
 	<div class="login-form">
 		<form name="main_form" action="" method="POST">				
             {% if key %}<input type="hidden" name="key" value="{{key}}">
+            <textarea name="post_text" disabled>{{post_text}}</textarea> <br>
             <input type="submit" name="control_button" value="Продолжить">{% else %}
             Oooops, strange request
             {% endif %}

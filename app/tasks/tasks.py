@@ -2,12 +2,15 @@ import yaml
 import os
 
 class task:
-    def __init__(self, tip, text, answer):
-        self.tip = tip
-        self.text = text
+    def __init__(self, location, task_text, answer, post_text):
+        self.location = location
+        self.task_text = task_text
         self.answer = answer
+        self.post_text = post_text
+
     def __repr__(self):
-        return "tip: {}\n text:{}\n answer:{}\n".format(self.tip, self.text, self.answer)
+        return "\nlocation: {}\n task_text:{}\n answer:{}\n post_text:{}\n\n".format(self.location, 
+            self.task_text, self.answer, self.post_text)
 
 
 def load_tasks(file_path):
@@ -18,10 +21,41 @@ def load_tasks(file_path):
     
     tasks = []   
     for t in data["tasks"]:
-         tasks.append(task(t['tip'], t['text'], t['answer']))
+         tasks.append(task(t['location'], t['task_text'], t['answer'], t['post_text']))
+
+    return tasks
+
+
+def load_all_tasks():
+    files = os.listdir(os.path.split(__file__)[0])
+    tasks_files = list(filter(lambda f: os.path.splitext(f)[1]=='.txt', files))
+
+    tasks = dict()
+
+    for f in tasks_files:
+        team = f.split('.')[0]
+        tasks[team] = []
+
+        with open(file=os.path.join(os.path.split(__file__)[0], f), mode="r", encoding="utf-8") as fin:
+            data = yaml.load(fin)
+        
+        if "tasks" not in data.keys() or len(data["tasks"])==0:
+            raise BaseException("There are no tasks in src data!") 
+
+        for t in data["tasks"]:
+            tasks[team].append(task(t['location'], t['task_text'], t['answer'], t['post_text']))
 
     return tasks
 
 
 tasks_file = os.path.join(os.path.split(__file__)[0], "tasks.txt")
-tasks = load_tasks(tasks_file)
+tasks = load_all_tasks() # load_tasks(tasks_file)
+
+def get_tasks_file(tasks_file=tasks_file):
+    with open(file=tasks_file, mode="r") as fin:
+        data = fin.read()
+    return data
+
+def save_tasks_file(data, tasks_file=tasks_file):
+    with open(file=tasks_file, mode="w") as fin:
+        fin.write(data)

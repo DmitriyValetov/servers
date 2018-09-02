@@ -1,8 +1,11 @@
 from app import app
 from flask import Flask, request, render_template, redirect, url_for, session
 
-from .teams import teams, search_team, save_teams
-from .tasks import tasks 
+from .teams import teams, search_team, save_team, load_team_text, save_team_text_and_reload_this_team, search_team_index
+from .tasks import tasks, get_tasks_file, save_tasks_file
+
+
+admin_key = '638732'
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -11,6 +14,10 @@ def index():
         print("index page form: {}".format(request.form))
     
         if request.form['control_button'] == 'login':
+            
+            if request.form['key'] == admin_key:
+                return redirect(url_for('admin'), code=307)
+
             key = request.form['key']
             team = search_team(key, teams)
             if team is None:
@@ -51,26 +58,26 @@ def task():
             return redirect(url_for('end_game'), code=307)
 
         else:
-            task = tasks[team.task_sequence[team.task_id]]
+            task = tasks[team.name][team.task_sequence[team.task_id]]
 
             if 'answer' in request.form.keys():
                 team_answer = request.form['answer']
                 # answering by submit
                 if team_answer in task.answer:
-                    print("team {} answered correctly on {} with {}.".format(team.name, task.text, team_answer))
+                    print("team {} answered correctly on {} with {}.".format(team.name, task.task_text, team_answer))
                     print("correct answers are: {}".format(task.answer))
                     team.task_id += 1
-                    save_teams(teams)
+                    save_team(team)
                     return redirect(url_for('success'), code='307')
                 else:
-                    print("team {} answered incorrectly on {} with {}.".format(team.name, task.text, team_answer))
+                    print("team {} answered incorrectly on {} with {}.".format(team.name, task.task_text, team_answer))
                     print("correct answers are: {}".format(task.answer))
                     return redirect(url_for('fail'), code='307')
             else:
                 # first time
-                print("teams attempts to answer {}".format(task.text))
+                print("teams attempts to answer {}".format(task.task_text))
                 print("correct answers are: {}".format(task.answer))
-                return render_template('task.html', tip=task.tip, text=task.text, key=key)
+                return render_template('task.html', location=task.location, task_text=task.task_text, key=key)
 
 
     print("strange enter the task page - redirect tot index")
@@ -100,13 +107,14 @@ def success():
         return redirect(url_for('index'))
 
     team = search_team(key, teams)
+    task = tasks[team.name][team.task_sequence[team.task_id-1]]# old to get post text
     print("{} are on success page.".format(team.name))
 
     if request.method == 'POST' and "control_button" in request.form.keys() \
         and request.form["control_button"] == 'Продолжить':
         return redirect(url_for('task'), code=307)
 
-    return render_template('success.html', key=key)
+    return render_template('success.html', key=key, post_text=task.post_text)
 
 
 @app.route('/fail', methods=['POST'])
@@ -125,3 +133,100 @@ def fail():
         return redirect(url_for('task'), code=307)
     
     return render_template('fail.html', key=key)
+
+
+@app.route('/admin', methods=['POST'])
+def admin():
+    page_template_file = 'admin.html'
+
+    if request.method == 'POST':
+
+        if admin_key != request.form['key']:
+            return redirect(url_for('index'))
+        key = request.form['key']
+        print(request.form)
+
+        # modes:
+        # 0) main menu:
+        #  - reset all teams == action
+        #  - get definite team data in text area
+        #  - get geolocation
+        #  - get tasks in text area
+
+        # sub menu
+        # 1) definite team data choose
+        # 2) get geolocation map
+        # 3) text area for definite team data or tasks
+
+
+        # no mode == main menu
+        if 'mode' not in request.form.keys():
+            if 'control_button' in request.form.keys():
+
+                if request.form['control_button'] == 'reset_all':
+                    print("Reseting the teams: ")
+                    for team in teams:
+                        team.task_id = 0
+                        print(team)
+                        save_team(team)
+
+                    return render_template(page_template_file, key=key)
+
+
+                elif request.form['control_button'] == 'edit_definite_team':
+                    return render_template(page_template_file, key=key, mode='edit_definite_team', teams=teams)
+
+                elif request.form['control_button'] == 'edit_tasks':
+                    tasks_text = get_tasks_file()
+                    return render_template(page_template_file, key=key, mode='edit_tasks', tasks_text=tasks_text)
+
+                elif request.form['control_button'] == 'geomap':
+                    return render_template(page_template_file, key=key, mode='geomap')
+
+        else: # with a mode teg
+            if request.form['mode'] == 'edit_tasks':
+
+                if request.form['control_button'] == 'cancel':
+                    return render_template(page_template_file, key=key, mode=None)
+                
+                elif request.form['control_button'] == 'save':
+                    save_tasks_file(request.form['raw_configs_text'])
+                    tasks_text = get_tasks_file()
+                    return render_template(page_template_file, key=key, mode='edit_tasks', tasks_text=tasks_text)
+
+                elif request.form['control_button'] == 'reopen':
+                    tasks_text = get_tasks_file()
+                    return render_template(page_template_file, key=key, mode='edit_tasks', tasks_text=tasks_text)
+
+            elif request.form['mode'] == 'edit_definite_team':
+                if "control_button" in request.form.keys():
+                    if request.form['control_button'] == 'cancel' and 'team_text' not in request.form.keys():
+                        return render_template(page_template_file, key=key) # back to main admin
+
+                if 'team_key' not in request.form.keys(): # another time choose the team
+                    return render_template(page_template_file, key=key, mode='edit_definite_team', teams=teams)
+                else:
+                    team = search_team(request.form['team_key'], teams)
+
+                    if 'control_button' in request.form.keys():
+
+                        if  request.form['control_button'] == 'save':
+                            teams[search_team_index(team.key, teams)] = save_team_text_and_reload_this_team(team.name, request.form['team_text'])
+
+                            # and return the same page with team data on it 
+
+                        elif request.form['control_button'] == 'cancel':
+                            return render_template(page_template_file, key=key, mode='edit_definite_team', teams=teams) 
+                                 # back to choosing the team
+
+
+                    #reload or first enter
+                    team_text = load_team_text(team.name)
+                    return render_template(page_template_file, key=key, mode='edit_definite_team', 
+                        team=team, team_text=team_text)
+
+        return render_template(page_template_file, key=key) 
+
+
+    else: # GET request
+        return redirect(url_for('index'))

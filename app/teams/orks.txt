@@ -1,0 +1,6 @@
+teams:
+- geo_position: None
+  key: love
+  name: orks
+  task_id: 0
+  task_sequence: [1, 2, 0]
