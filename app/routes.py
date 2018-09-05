@@ -44,21 +44,20 @@ def task():
             return redirect(url_for('index'))
         print("team {} entered task page.".format(team.name))
         print("team {} has task_id: {}".format(team.name, team.task_id))
-        print("team {} task sequence is {}".format(team.name, team.task_sequence))
 
         if team.task_id is None:
             print("team {} has ended the game already.".format(team.name))
             print("team {} redirect to end_game page.".format(team.name))
             return redirect(url_for('end_game'), code=307)
 
-        elif team.task_id >= len(team.task_sequence):
+        elif team.task_id >= len(tasks[team.name]):
             print("team {} has just ended the game already.".format(team.name))
             print("team {} redirect to end_game page.".format(team.name))
             team.task_id = None # finale
             return redirect(url_for('end_game'), code=307)
 
         else:
-            task = tasks[team.name][team.task_sequence[team.task_id]]
+            task = tasks[team.name][team.task_id]
 
             if 'answer' in request.form.keys():
                 team_answer = request.form['answer']
@@ -107,7 +106,7 @@ def success():
         return redirect(url_for('index'))
 
     team = search_team(key, teams)
-    task = tasks[team.name][team.task_sequence[team.task_id-1]]# old to get post text
+    task = tasks[team.name][team.task_id-1]# old to get post text
     print("{} are on success page.".format(team.name))
 
     if request.method == 'POST' and "control_button" in request.form.keys() \

@@ -76,6 +76,24 @@ textarea
     resize: none;
 }
 
+
+.textarea-location 
+{
+    background-color: white;
+    border: 2px solid #555555;
+    color: black;
+    border-radius: 6px;
+    padding: 16px 16px;
+    text-align: left;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 400px;
+    height: 30px;
+    resize: none;
+}
+
+
 tr, td, table
 {
     border: 0px solid black;
