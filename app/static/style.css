@@ -28,8 +28,8 @@ html
 }
 
 .main-div {
-    max-width: 600px;
-    margin: 10% auto;
+    max-width: 900px;
+    margin: 5% auto;
     margin-left: auto;
     margin-right: auto;
     border: 0px solid blue;
@@ -71,11 +71,24 @@ textarea
     display: block;
     margin-left: auto;
     margin-right: auto;
-    width: 400px;
+    width: 500px;
     height: 150px;
     resize: none;
 }
 
+.task_text
+{
+    width: 500px;
+    height: 150px;
+    margin: auto;
+    overflow: auto;
+    padding: 16px 16px;
+    text-align: justify;
+    background: white;
+    border: 2px solid #555555;
+    border-radius: 6px;
+    color: black;
+}
 
 .textarea-location 
 {
@@ -88,7 +101,7 @@ textarea
     display: block;
     margin-left: auto;
     margin-right: auto;
-    width: 400px;
+    width: 500px;
     height: 30px;
     resize: none;
 }

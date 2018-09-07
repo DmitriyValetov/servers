@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+
+{% block title %} login page {% endblock %}
+
+
+{% block body %} 
+
+<head> 
+
+  <script src="https://maps.api.2gis.ru/2.0/loader.js"></script>
+
+  <script type="text/javascript"> 
+
+
+    function init(){
+
+        // var teams_dict = {{ teams_dict | safe}};
+        
+
+            DG.then(function() {
+
+                    // var teams_dict = {'orks' : [55.704119 , 37.621432], 'elfs': [55.704125 , 37.621439]}; // {{ teams_dict | safe}};
+                    var teams_dict = {{ teams_dict | safe}};
+                    var map, myIcon, markers = DG.featureGroup();
+
+                    map = DG.map('map', {
+                        center: [55.643471, 37.569533],
+                        zoom: 10
+                    });
+
+                    myIcon = DG.icon({
+                        iconUrl: './static/images/star.jpeg',
+                        iconSize: [20, 20]
+                    });
+
+                    popups = DG.featureGroup();
+
+                    for (var key in teams_dict) {
+                        if (teams_dict.hasOwnProperty(key)) {
+                            var coordinate_pair = teams_dict[key];
+                            var place_name = key;
+                            DG.marker(coordinate_pair).addTo(markers).bindPopup(place_name);
+                            DG.popup()
+                            .setLatLng(coordinate_pair)
+                            .setContent(place_name)
+                            .addTo(popups);
+                        }
+                    }
+
+                    
+                    map.locate({setView: false, watch: false}).on('locationfound', function(e) {
+                            document.getElementById('My position').innerHTML = 'My coords: (' + e.latitude.toFixed(6) + ' ,  ' + e.longitude.toFixed(6) + ')';
+                            DG.marker([e.latitude, e.longitude], { icon: myIcon}).addTo(markers).bindPopup('It\'s me');
+                            DG.popup()
+                            .setLatLng([e.latitude, e.longitude])
+                            .setContent('It\'s you')
+                            .addTo(popups);
+
+                        });
+                    
+
+                    markers.addTo(map);
+                    //map.fitBounds(markers.getBounds());
+                    
+                    popups.addTo(map);
+                }
+
+            )};
+
+  </script> 
+
+</head> 
+
+<body onload="init()" class='grass-back'> 
+
+    <form name='main_form' method="POST" action="">
+        {% if key %} <input type="hidden" name="key" value="{{key}}"> {% endif %}
+        
+        <div id="My position">Loading...</div> 
+
+        <!-- div id="json_text"> ... </div-->
+
+        <div id="map" style="width: 100%; height: 400px;"></div>
+        <button class="button_auto_width" name="control_button" value="cancel">Вернуться</button>
+    </form>
+
+</body> 
+{% endblock %}

@@ -1,5 +1,5 @@
 teams:
-- geo_position: None
+- geo_position: []
   key: '1303'
   name: rabbits
   task_id: 0

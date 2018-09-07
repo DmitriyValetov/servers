@@ -1,4 +1,6 @@
 from app import app
+import json
+
 from flask import Flask, request, render_template, redirect, url_for, session
 
 from .teams import teams, search_team, save_team, load_team_text, save_team_text_and_reload_this_team, search_team_index
@@ -27,6 +29,11 @@ def index():
                 return redirect(url_for('task'), code=307)
     
     return render_template('index.html')
+
+
+@app.route('/map', methods=['GET'])
+def map_page():
+    return render_template('map_single.html')
 
 
 @app.route('/task', methods=['GET', 'POST'])
@@ -163,7 +170,7 @@ def admin():
             if 'control_button' in request.form.keys():
 
                 if request.form['control_button'] == 'reset_all':
-                    print("Reseting the teams: ")
+                    print("Reseting the teams progresses: ")
                     for team in teams:
                         team.task_id = 0
                         print(team)
@@ -172,6 +179,16 @@ def admin():
                     return render_template(page_template_file, key=key)
 
 
+                elif request.form['control_button'] == 'reset_all_geo':
+                    print("Reseting the teams geo positions: ")
+                    for team in teams:
+                        team.geo_position = []
+                        print(team)
+                        save_team(team)
+
+                    return render_template(page_template_file, key=key)
+                    
+
                 elif request.form['control_button'] == 'edit_definite_team':
                     return render_template(page_template_file, key=key, mode='edit_definite_team', teams=teams)
 
@@ -179,7 +196,7 @@ def admin():
                     return render_template(page_template_file, key=key, mode='edit_tasks', teams=teams)
 
                 elif request.form['control_button'] == 'geomap':
-                    return render_template(page_template_file, key=key, mode='geomap')
+                    return redirect(url_for('teams_map'), code=307)
 
         else: # with a mode teg
             if request.form['mode'] == 'edit_tasks':
@@ -241,3 +258,20 @@ def admin():
 
     else: # GET request
         return redirect(url_for('index'))
+
+
+
+@app.route('/teams_map', methods=['POST'])
+def teams_map():
+    if 'key' in request.form.keys() and request.form['key'] == admin_key:
+        if 'control_button' in request.form.keys() and request.form['control_button'] == 'cancel':
+            return redirect(url_for('admin'), code=307)
+
+        teams_dicts = dict()
+        for team in teams:
+            if team.geo_position and len(team.geo_position) > 0:
+                teams_dicts[team.name] = team.geo_position[-1] 
+
+        return render_template('map_teams.html', teams_dict = (teams_dicts), key=request.form['key'])
+
+    return redirect(url_for('index'))

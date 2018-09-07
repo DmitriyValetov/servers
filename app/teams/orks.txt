@@ -1,5 +1,5 @@
 teams:
-- geo_position: None
+- geo_position: []
   key: '1270'
   name: orks
   task_id: 0
