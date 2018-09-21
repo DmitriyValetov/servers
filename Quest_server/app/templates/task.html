@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+
+{% block title %} task page {% endblock %}
+
+
+{% block body %} 
+
+<body class="grass-back">
+	<form class="main-form" action="" method="POST">
+		{% if key %} <input type="hidden" name="key" value="{{key}}"> {% endif %}
+		<table class="task_table">
+			<tr>
+				<td>
+					<!--textarea name="location" class="textarea-location">Локация: {{location}}</textarea-->
+					<p name="location" class="textarea-location">Локация: {{location}}</p>									
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div name="task_text" class="task_text" disabled>Задание: {{task_text | safe}}</div>
+				</td>
+			</tr>
+			<tr>
+				<td>
+				    Ответ:<input type="text" name="answer" placeholder="Введите ответ">
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="submit" name="control_button" value="Отправить ответ">
+				</td>
+			</tr>
+		</table>
+	</form>
+</body>
+{% endblock %}

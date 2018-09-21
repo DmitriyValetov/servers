@@ -1,0 +1,162 @@
+html
+{
+    margin: 0px; padding: 0px;
+}
+
+
+.body-footballplayer 
+{
+    margin: 0px; padding: 0px;
+    background-image: url(./images/index2.jpeg); /* Путь к фоновому изображению */
+    background-color: #c7b39b; /* Цвет фона */
+}
+
+.grass-back 
+{
+    margin: 0px; padding: 0px;
+    background-image: url(./images/grass.jpeg); /* Путь к фоновому изображению */
+    background-size: cover;
+    background-color: #c7b39b; /* Цвет фона */
+}
+
+.meat-back
+{
+    margin: 0px; padding: 0px;
+    background-image: url(./images/meat.jpeg); /* Путь к фоновому изображению */
+    background-size: cover;
+    background-color: #c7b39b; /* Цвет фона */
+}
+
+.main-div {
+    max-width: 900px;
+    margin: 5% auto;
+    margin-left: auto;
+    margin-right: auto;
+    border: 0px solid blue;
+    background-color: rgb(188, 243, 151);
+    border-radius: 3px;
+    opacity: 0.9 /* prozrachnost */
+}
+
+.greetings
+{
+    font:  200% sans-serif;
+    text-align: center;
+    width: 100%;
+}
+
+.login-form
+{
+    text-align: center; /* it works on all inline elements  */
+    font:  16px sans-serif;
+    margin: 100px auto;
+    width: 100%;
+    border: 0px solid red;
+}
+
+.error-text
+{
+    font: 12px sans-serif;
+    color: red
+}
+
+textarea 
+{
+    background-color: white;
+    border: 2px solid #555555;
+    color: black;
+    border-radius: 6px;
+    padding: 16px 16px;
+    text-align: left;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 500px;
+    height: 150px;
+    resize: none;
+}
+
+.task_text
+{
+    width: 500px;
+    height: 100%; 
+    position: relative;
+    margin: auto;
+    overflow: auto;
+    padding: 16px 16px;
+    text-align: justify;
+    background: white;
+    border: 2px solid #555555;
+    border-radius: 6px;
+    color: black;
+}
+
+.textarea-location 
+{
+    background-color: white;
+    border: 2px solid #555555;
+    color: black;
+    border-radius: 6px;
+    padding: 16px 16px;
+    text-align: left;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 500px;
+    height: 30px;
+    resize: none;
+}
+
+
+tr, td, table
+{
+    border: 0px solid black;
+}
+
+.task_table
+{
+    margin: 0 auto;
+}
+
+.button {
+    background-color: white;
+    border: 2px solid #555555;
+    color: black;
+    padding: 16px 16px;
+    text-align: left;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    cursor: pointer;
+    width: 400px;
+    border-radius: 6px;
+}
+
+.button:hover {
+    background-color: #555555;
+    color: white;
+}
+
+.button1 {
+    background-color: white;
+    border: 1px solid #555555;
+    color: black;
+    padding: 8px 16px;
+    text-align: left;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    cursor: pointer;
+    border-radius: 2px;
+}
+
+.button1:hover {
+    background-color: #555555;
+    color: white;
+}
