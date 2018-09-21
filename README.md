@@ -9,6 +9,7 @@ servers on python (flask)
 
 free hosting:
   pythonanywhere.com
-    bugs:
-      1) sees only ./mysite
-      2) runs only flask_app.py
+    Features:
+      0) free server name is you register name
+      1) server sees only ./mysite (if not changed while initializing new web app)
+      2) runs only flask_app.py (if not changed while initializing new web app)
