@@ -195,9 +195,6 @@ def admin():
                 elif request.form['control_button'] == 'edit_tasks':
                     return render_template(page_template_file, key=key, mode='edit_tasks', teams=teams)
 
-                elif request.form['control_button'] == 'geomap':
-                    return redirect(url_for('teams_map'), code=307)
-
         else: # with a mode teg
             if request.form['mode'] == 'edit_tasks':
 
@@ -260,18 +257,3 @@ def admin():
         return redirect(url_for('index'))
 
 
-
-@app.route('/teams_map', methods=['POST'])
-def teams_map():
-    if 'key' in request.form.keys() and request.form['key'] == admin_key:
-        if 'control_button' in request.form.keys() and request.form['control_button'] == 'cancel':
-            return redirect(url_for('admin'), code=307)
-
-        teams_dicts = dict()
-        for team in teams:
-            if team.geo_position and len(team.geo_position) > 0:
-                teams_dicts[team.name] = team.geo_position[-1] 
-
-        return render_template('map_teams.html', teams_dict = (teams_dicts), key=request.form['key'])
-
-    return redirect(url_for('index'))

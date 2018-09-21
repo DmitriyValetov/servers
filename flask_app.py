@@ -1,4 +1,4 @@
-from app import app, sio
+from app import app
 
 if __name__ == '__main__':
-    sio.run(app, debug = False)
+    app.run(debug = False)

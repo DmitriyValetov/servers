@@ -79,7 +79,8 @@ textarea
 .task_text
 {
     width: 500px;
-    height: 150px;
+    height: 100%; 
+    position: relative;
     margin: auto;
     overflow: auto;
     padding: 16px 16px;

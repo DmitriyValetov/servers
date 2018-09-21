@@ -6,62 +6,7 @@
 
 {% block body %} 
 
-<head> 
-		<script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
-		<script src="{{ url_for('static', filename='js/socket.io.min.js') }}"></script>
-
-		<script type="text/javascript" charset="utf-8">
-
-
-			//$(document).ready(function() {
-			function init(){
-
-				// init the socket and namespace(optional)
-				namespace = '/flask';
-				var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
-				socket.emit('debug_msg', { data: 'connected to launch page'});
-
-
-				function successCallback(coords) {
-					var team_key = $('input[name="key"]').val();
-					socket.emit('team_position', { team_key: team_key, lat: coords.latitude, longt: coords.longitude});
-					return false;
-				}
-
-				function handleSuccess(position) {
-					successCallback(position.coords);
-				return false;
-				}
-
-				function handleFail(error) {
-					document.getElementById('test').innerHTML = 'error';
-					return false;
-				}
-
-
-				var geolocation = navigator.geolocation;
-
-				var coordinates = geolocation.watchPosition(handleSuccess, handleFail , {
-					enableHighAccuracy: true,
-					maximumAge: 5000 // 5 sec.
-				});
-		
-
-				socket.on('ping', function() {
-					socket.emit('debug_msg', { data: 'pong'});
-            	});
-
-				return false;
-			};
-		
-
-	  
-		</script> 
-	  
-	  </head> 
-
-
-<body class="grass-back" onload="init()">
+<body class="grass-back">
 	<form class="main-form" action="" method="POST">
 		{% if key %} <input type="hidden" name="key" value="{{key}}"> {% endif %}
 		<table class="task_table">
