@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+
+<script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/socket.io.min.js') }}"></script>
+<!-- or so -->
+<!-- <script type="text/javascript" src="../static/js/jquery.min.js"></script>
+<script type="text/javascript" src="../static/js/socket.io.min.js"></script> -->
+
+
+<script type="text/javascript" charset="utf-8">
+    $(document).ready(function() {
+
+        // init the socket and namespace(optional)
+        namespace = '/';
+        let connection_str = location.protocol + '//' + document.domain + ':' + location.port + namespace;
+        var socket = io.connect(connection_str);
+        $('#log').append('<br>' + $('<div/>').text('connecting to: ' + connection_str).html());
+
+        socket.on('connect', function() {
+            socket.emit('connecting_msg', {data: 'I\'m connected!'});
+        });
+
+        // actions
+        $("#server_msg_button").on('click', function () {
+            msg = { data: 'test msg'};
+            $('#log').append('<br>' + $('<div/>').text('Sended: ' + msg.data).html());
+            // send message to server
+            socket.emit('debug_msg', msg);
+            return false; // prevent submitting of page
+        });
+
+
+        // receiving messages
+        socket.on('server_response', function(msg) {
+            $('#log').append('<br>' + $('<div/>').text('Received: ' + msg.data).html());
+            return false; // prevent submitting of page
+        });
+
+        socket.on('greeting', function(msg) {
+            $('#log').append('<br>' + $('<div/>').text('Received: ' + msg.data).html());
+            $("#greetings").text(msg.data);
+            return false; // prevent submitting of page
+        });
+
+
+        // submitting button
+        // $("#submit_button").on('click', function () {
+        //     $('#main_form').submit();
+        //     //this.submit();
+        //     // document.forms['main_form'].submit();
+        //     return false;
+        // });
+
+
+        $("#msg_button").on('click', function () {
+            name = $("#name").val(); // .text() .html() - don't work
+            // alert(name);
+            msg = { data: name};
+            $('#log').append('<br>' + $('<div/>').text('Send name to server: ' + msg.data).html());
+            socket.emit('greeting', msg);
+            return false; // submitting of page
+        });
+
+    });
+</script>
+
+
+<body>
+
+    <span id='greetings'>Hello{% if name %}, {{name}} {% else %} there! {% endif %}</span>
+
+    <form id='main_form' method="POST" action="/" method='POST'>
+        {{ form.csrf_token }}
+        {{ form.name.label }} {{ form.name(size=20) }}<br>
+        {{ form.text_field.label }}{{ form.text_field(size=100) }}<br>
+        {{ form.text_area_field.label }}{{ form.text_area_field(size=100) }}<br>
+        {{ form.boolean_field.label }}{{ form.boolean_field }}<br>
+        {{ form.decimial_field.label }}{{ form.decimial_field }}<br>
+        <input id="submit_button" type="submit" value="submit form">
+        <button id="msg_button">send name as websocket message</button>
+        <button id="server_msg_button" formnovalidate>send server ping msg</button>
+    </form>
+
+    <h2>Received messages:</h2>
+    <div id="log" style="height:200px; width: 50%; border: 1px solid #000000; overflow:auto; word-wrap:normal;
+    white-space:pre; padding:10px 15px; margin:20px 0px;">   </div>
+
+
+
+</body>
+
+
+{% endblock %}
