@@ -1,0 +1,6 @@
+1) pip install virtualenv
+
+2) virtualenv env --python=python3
+3) chmod ugo+x ./env/bin/activate
+4) source ./env/bin/activate
+5) pip install -r requirements.txt

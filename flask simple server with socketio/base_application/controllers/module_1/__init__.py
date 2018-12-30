@@ -1,0 +1,1 @@
+from .routes import module_1_blueprint

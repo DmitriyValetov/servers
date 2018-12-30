@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+
+        <style>
+        
+            textarea {
+                width: 50%;
+                height: 150px;
+            }
+
+            #log {
+                width: 50%;
+                height: 200px; 
+                border: 1px solid #000000; 
+                overflow: auto; 
+                word-wrap: normal;
+                white-space: pre; 
+                /* padding: 10px 15px;  */
+                /* margin: 20px 0px; */
+            }
+        
+        </style>
+
+        <!-- <script src="./jquery.min.js"></script> -->
+        <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/socket.io.min.js') }}"></script>
+        
+        <script type="text/javascript" charset="utf-8">
+            $(document).ready(function() {
+        
+                // // init the socket and namespace(optional)
+                namespace = '/main'; // name space of a blueprint. if empty, than global
+                var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
+                socket.emit('debug_msg', { 'data': 'connecting to server'});
+        
+
+                function getSelectionText() {
+                    if (window.getSelection) {
+                        try {
+                            var ta = $('textarea').get(0);
+                            return ta.value.substring(ta.selectionStart, ta.selectionEnd);
+                        } catch (e) {
+                            console.log('Cant get selection text')
+                        }
+                    } 
+                    // For IE
+                    if (document.selection && document.selection.type != "Control") {
+                        return document.selection.createRange().text;
+                    }
+                }
+
+                function log(msg) {
+                    $('#log').append('<br>' + $('<div/>').text(msg).html());
+                    // $('#log').append('<br>' + $('<div/>').text('Received #' + msg.count + ': ' + msg.data).html()  );
+                }
+
+
+                // work
+                // $(document).on('mouseup', function(){
+                //     // for textarea
+                //     $("#debug1").html("You select '" + getSelectionText() + "'");
+                //     // alert(getSelectionText());
+                    
+                //     // for all except forms
+                //     $("#debug2").html("You select '" + document.getSelection().toString() + "'");
+                // });
+
+        
+                // emitting messages
+                // var counter = 0;
+                // $("#active_text").on('click', function () {
+                //     socket.emit('debug_msg', { data: 'active_text clicked'});
+                //     $('#message_placeholder').text("Sended message to the server")
+                //     counter += 1;
+                //     $('#text_tip0').text(counter);        
+                //     return false; // prevent submitting of page
+                // });
+        
+
+        
+                // receiving messages
+                socket.on('response', function(msg) {
+                    log(msg);
+                    return false; // prevent submitting of page
+                });
+
+                
+                // all clicks counter
+                var click_counter = 0;
+                $("#main_text").on('click', function () {
+                    click_counter += 1;
+                    $('#text_tip1').text(click_counter);        
+                    return false; // prevent submitting of page
+                });
+
+
+
+                // selection counter in textarea 
+                var select_counter = 0;
+                $("#main_text").mouseup(function(){                    
+                    var text = getSelectionText();
+                    if(text != ""){
+                        // alert(text);
+                        // document.getElementById('text_1').value = text;
+                        // $("#text_1").html(text);  
+                        // $("#debug").html(text);
+                        select_counter += 1;
+                        $("#text_tip2").text(select_counter);  
+                    }
+                    return false; // prevent submitting of page
+                });
+
+
+                //$("#button").addEventListener('click', function(){
+                
+
+                $('#main_text').on('mouseup', function(){
+                    // for textarea
+                    text = getSelectionText()
+                    if(text == ''){
+                        text = '---';
+                    }
+                    log(text);
+                    $("#selected_text").text(text);
+                });
+
+
+                $("#button").on('click', function(){
+                    text = getSelectionText()
+                    if(text == ''){
+                        text = '---';
+                    }                        
+                    $("#debug").html(text);
+                    // alert(text);
+                    // alert(window.getSelection().toString()); // not for a textarea
+                    return false;
+                });
+                
+
+                $("#button1").on('click', function(){
+                    text = getSelectionText()
+                    if(text == ''){
+                        text = '---';
+                    }
+                    $("#text_1").html(text);
+
+                    // alert(text);
+                    // alert(window.getSelection().toString()); // not for a textarea
+                    return false;
+                });
+
+                $("#button2").on('click', function(){
+                    text = getSelectionText()
+                    if(text == ''){
+                        text = '---';
+                    }
+                    $("#text_2").html(text);
+
+                    // alert(text);
+                    // alert(window.getSelection().toString()); // not for a textarea
+                    return false;
+                });
+
+
+                $('#button_server').on('click', function(){
+                    text1 = $("#text_1").text();
+                    text2 = $("#text_2").text();
+                    all_text = $("#main_text").val();
+                    if(text1 != '' && text2 != ''){
+                        msg = "sended to server: " + text1 + " + " + text2
+                        alert(msg);
+                        log(msg);
+                        socket.emit('text_data_to_server', { 'text1': text1, 'text2': text2, 'all_text': all_text });
+                    } else {
+                        alert('One or both texts are not chosen!');
+                    }
+                });
+
+        
+            });
+        
+        </script>
+
+    </head>
+
+    <body>
+        
+        <p id='active_text'>Hello, Roma!</p>
+
+        Roma clicked:  <span id='text_tip0'>0</span><br>        
+        Texts clicked:  <span id='text_tip1'>0</span><br>
+        Texts selected: <span id='text_tip2'>0</span><br>
+        Text 1: <span id='text_1'>---</span> <input type="button" id="button1" value='get text1'> <br>
+        Text 2: <span id='text_2'>---</span> <input type="button" id="button2" value='get text2'> <br>
+        Current selected text: <span id='selected_text'>---</span><br>
+        debug1: <span id='debug'></span><br>
+        <input type="button" id="button" value='alert the selected text'><br><br>
+
+        <input type="button" id="button_server" value='send text to server'><br><br>
+
+        textarea:<br>
+        <textarea id='main_text'></textarea><br><br>
+
+        Log:
+        <div id="log"></div>
+
+    </body>
+</html>

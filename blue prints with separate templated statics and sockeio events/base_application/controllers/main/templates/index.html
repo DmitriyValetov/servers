@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <!--script src="js/jquery.min.js"></script-->
+        <script src="{{ url_for('main.static', filename='js/jquery.min.js') }}"></script>
+        <script src="{{ url_for('main.static', filename='js/socket.io.min.js') }}"></script>
+        
+        <script type="text/javascript" charset="utf-8">
+            $(document).ready(function() {
+        
+                // init the socket and namespace(optional)
+                namespace = '/main'; // name space of a blueprint. if empty, than global
+                var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
+                socket.emit('debug_msg', { data: 'connecting to server'});
+        
+        
+                // emitting messages
+                var counter = 0;
+                $("#active_text").on('click', function () {
+                    socket.emit('debug_msg', { data: 'active_text clicked'});
+                    $('#message_placeholder').text("Sended message to the server")
+                    counter += 1;
+                    $('#text_tip').text('Text clicked: ' + counter);        
+                    return false; // prevent submitting of page
+                });
+        
+                // receiving messages
+                socket.on('response', function(msg) {
+                    $('#message_placeholder').text(msg.data);
+                    return false; // prevent submitting of page
+                });
+                
+        
+            });
+        
+        </script>
+
+    </head>
+
+    <body>
+        <p id='active_text'>Hello in master index</p>
+        Tip: <p id='text_tip'>Initial tip</p>
+        Message: <p id='message_placeholder'>Initial message</p>
+    </body>
+</html>

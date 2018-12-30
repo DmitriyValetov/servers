@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+
+        <style>
+        
+            textarea {
+                width: 50%;
+                height: 150px;
+            }
+
+            #log {
+                width: 50%;
+                height: 200px; 
+                border: 1px solid #000000; 
+                overflow: auto; 
+                word-wrap: normal;
+                white-space: pre; 
+                /* padding: 10px 15px;  */
+                /* margin: 20px 0px; */
+            }
+        
+        </style>
+
+        <!-- <script src="./jquery.min.js"></script> -->
+        <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/socket.io.min.js') }}"></script>
+        
+        <script type="text/javascript" charset="utf-8">
+            $(document).ready(function() {
+        
+                // // init the socket and namespace(optional)
+                namespace = '/main'; // name space of a blueprint. if empty, than global
+                var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
+                socket.emit('debug_msg', { 'data': 'connecting to server'});
+        
+
+                function getSelectionText() {
+                    if (window.getSelection) {
+                        try {
+                            var ta = $('textarea').get(0);
+                            return ta.value.substring(ta.selectionStart, ta.selectionEnd);
+                        } catch (e) {
+                            console.log('Cant get selection text')
+                        }
+                    } 
+                    // For IE
+                    if (document.selection && document.selection.type != "Control") {
+                        return document.selection.createRange().text;
+                    }
+                }
+
+                function log(data) {
+                    // $('#log').append('<br>' + $('<div/>').text(data).html());
+                    $('#log').html($('<div/>').text(data).html());
+                }
+
+
+        
+                // receiving messages
+                socket.on('response', function(data) {
+                    log(data);
+                    return false; // prevent submitting of page
+                });
+
+                
+                $("#select_button").on('click', function(){
+                    text = getSelectionText()
+                    if(text == ''){
+                        text = '---';
+                    }
+                    $("#selected_text").html(text);
+                    return false;
+                });
+
+
+                $('#button_server').on('click', function(){
+                    source_path = $('#source_path').val();
+                    selected_text = $("#selected_text").text();
+                    all_text = $("#main_text").val();
+                    
+                    if(selected_text != '' && all_text != ''){
+                        msg = "sended to server: " + selected_text;
+                        alert(msg);
+                        data_dict = { 'selected_text': selected_text, 
+                                  'all_text': all_text,
+                                  'source_path' : source_path};
+                        socket.emit('data_from_client', JSON.stringify(data_dict));
+                    } else {
+                        alert('One or both texts are not chosen!');
+                    }
+                });
+
+        
+            });
+        
+        </script>
+
+    </head>
+
+    <body>
+        
+
+        Path to exel: <input type="text" id='source_path'></body><br>
+
+        Current selected text: <span id='selected_text'>---</span> <input type="button" id="select_button" value='submit the text'> <br>
+
+        <input type="button" id="button_server" value='send text to server'><br><br>
+
+        Your workplace:<br>
+        <textarea id='main_text'></textarea><br><br>
+
+        Data from server:
+        <div id="log"></div>
+
+    </body>
+</html>

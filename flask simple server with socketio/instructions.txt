@@ -1,0 +1,21 @@
+1) pip install -r requirements.txt
+2) python starter.py
+
+or
+
+1) pip install virtualenv
+2) virtualenv env --python=python3
+linux:
+	3) chmod ugo+x ./env/bin/activate
+	4) source ./env/bin/activate
+windows:
+	3) ./env/bin/activate.exe
+
+5) pip isntall -r requirements.txt
+6) python starter.txt
+7) deactivate
+
+
+
+By 'which python' and 'which pip' you
+can find which you use at this time in linux
